@@ -1,0 +1,21 @@
+# .clangd -- Configuration file for clangd
+
+CompileFlags:
+  Add:
+    - -include
+    - pic18f4550_clangd_stubs.h
+
+    # --- FIX for 'main' must return 'int' ---
+    # Tells clangd this is for a bare-metal embedded system
+    - -ffreestanding
+
+    # --- YOU MUST CHANGE THESE PATHS ---
+    # Path to the general XC8 include directory
+    - -I/opt/microchip/xc8/v3.00/pic/include
+
+    # --- DEFINE YOUR CHIP AND CLOCK FREQUENCY ---
+    # Find your chip's macro in the processor-specific include directory
+    # - -D__PIC18F4550__=1
+    # Define your crystal frequency, which is used by __delay_ms(), etc.
+    # - -D_XTAL_FREQ=20000000
+
