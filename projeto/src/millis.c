@@ -19,22 +19,17 @@ static volatile uint8_t timer_fractional_ms = 0;
  * Prescaler options: 1, 8, 64, 256, 1024
  *
  * 1. Prescaler = 64:
- * Timer clock frequency = F_CPU / 64 = 16,000,000 / 64 = 250,000 Hz
- * Time per tick = 1 / 250,000 = 0.000004 seconds = 4 microseconds
- * Time per overflow = 256 ticks * 4 microseconds/tick = 1024 microseconds = 1.024 ms
+ * Timer clock frequency = F_CPU / 64 = 16.000.000 / 64 = 250.000 Hz
+ * Time per tick = 1 / 250.000 = 0,000004 seconds = 4 microseconds
+ * Time per overflow = 256 ticks * 4 microseconds/tick = 1024 microseconds = 1,024 ms
  *
  * This means for every overflow, we increment by 1 millisecond, but we have an
- * accumulated error of 0.024 ms per overflow.
+ * accumulated error of 0,024 ms per overflow.
  * To correct this:
  * 1000 ms / 1.024 ms/overflow = 976.5625 overflows per second
- * So, after 1000 overflows, we have counted 1024 * 1000 = 1,024,000 microseconds
- * This is 24,000 microseconds (24 ms) too much per 1000 overflows.
- * The Arduino core implementation typically handles this by adding an extra millisecond
- * every 41 or 42 overflows (since 1000 / 24 = ~41.67).
- * Specifically, 24 overflows result in 24 * 1024 = 24576 microseconds.
- * 25 overflows result in 25 * 1024 = 25600 microseconds.
- * We add 1 extra millisecond every time `timer_fractional_ms` crosses 24.
- * This ensures that over 1000 overflows (approx 1 second), the count is correct.
+ * So, after 1000 overflows, we have counted 1024 * 1000 = 1.024.000 microseconds
+ * This is 24.000 microseconds (24 ms) too much per 1000 overflows.
+ * We add 1 extra millisecond every time `timer_fractional_ms` crosses 1000.
  */
 
 // Timer0 Overflow Interrupt Service Routine
@@ -69,9 +64,6 @@ void millis_init(void) {
 uint32_t millis(void) {
     uint32_t ms;
 
-    // Critical section: disable interrupts to ensure atomic read of the 32-bit counter
-    // This prevents the ISR from updating the variable while we are reading it,
-    // which could lead to reading a corrupted value.
     cli();
     ms = timer_overflow_count;
     sei();

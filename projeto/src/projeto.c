@@ -55,6 +55,11 @@ uint32_t solenoidActivateTime = 0;
 const uint32_t activationDuration = 5000;
 volatile uint8_t solenoidActive = 0;
 
+// Global variables for LED blinking
+uint32_t ledBlinkStartTime = 0;
+uint8_t ledBlinkCount = 0; // Number of blinks remaining (on/off cycles)
+const uint32_t ledBlinkDuration = 200; // Duration for one state (ON or OFF)
+
 char keypadButtons[ROWS][COLS] = {
   {'1','2','3'},
   {'4','5','6'},
@@ -136,12 +141,21 @@ void run(void) {
         set_bit(PORTB, LEDRPIN);       // Turn Red LED ON (return to initial state)
     }
 
+    // --- LED Blinking Logic (Non-blocking) ---
+    if (ledBlinkCount > 0) {
+        if (currentMillis - ledBlinkStartTime >= ledBlinkDuration) {
+            toggle_bit(PORTB, LEDGPIN); // Toggle Green LED
+            ledBlinkStartTime = currentMillis; // Reset timer for next toggle
+            ledBlinkCount--; // Decrement the count
+        }
+    }
+
     // --- Keypad Reading ---
     char customKey = getKeypadKey();
 
     if (customKey != '\0' && solenoidActive == 0) { // If a key was pressed and solenoid is not active
       buzz(2093, 200); // Key press sound
-      toggle_bit(PORTB, LEDGPIN);    // Red LED OFF
+      //toggle_bit(PORTB, LEDGPIN);    // Red LED OFF
 
       if (customKey == '#') {
         enteredPassword[passwordLength] = '\0'; // Null-terminate the string
@@ -154,6 +168,11 @@ void run(void) {
 
           clear_bit(PORTB, LEDRPIN);    // Red LED OFF
           set_bit(PORTB, LEDGPIN);  // Green LED ON
+
+          // Initiate LED blinking (6 toggles for 3 blinks: ON, OFF, ON, OFF, ON, OFF)
+          ledBlinkCount = 6;
+          ledBlinkStartTime = currentMillis;
+          set_bit(PORTB, LEDGPIN); // Start with Green LED ON
 
           // Correct password sound: 3 quick beeps
           buzz(523, 100);
@@ -224,26 +243,6 @@ char getKeypadKey(void) {
     }
     return '\0'; // No key pressed
 }
-
-
-// --- Buzzer Functions (Simplified tone generation) ---
-// Note: This is a very basic tone implementation using _delay_us.
-// For more precise or simultaneous operations, consider using a timer/PWM.
-/* void buzz(uint16_t frequency_hz, uint32_t duration_ms) { */
-/*     if (frequency_hz == 0) { */
-/*         noBuzz(); */
-/*         return; */
-/*     } */
-/*     uint32_t period_us = 1000000UL / frequency_hz; */
-/*     uint32_t num_cycles = (uint32_t)duration_ms * 1000UL / period_us; */
-/**/
-/*     for (uint32_t i = 0; i < num_cycles; i++) { */
-/*         set_bit(DDRD, BUZZERPIN); */
-/*         _delay_us(period_us / 2); */
-/*         clear_bit(DDRD, BUZZERPIN); */
-/*         _delay_us(period_us / 2); */
-/*     } */
-/* } */
 
 void buzz(uint16_t frequency_hz, uint32_t duration_ms) {
     if (frequency_hz == 0) {

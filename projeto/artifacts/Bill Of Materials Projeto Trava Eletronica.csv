@@ -1,0 +1,20 @@
+Category,Quantity,References,Value,Descrição,Preço Unitário
+Capacitores,2,C1-C2,22pF,Capacitor Cerâmico 22nF / 50V,R$0.20
+Capacitores,4,C3-C6,100nF,Capacitor Eletrolítico 100uF / 16V,R$0.30
+Resistores,1,R1,10k,Resistor 10K 1/4W 5%,R$0.07
+Resistores,2,R2-R3,220,Resistor 220R 1/4W 5%,R$0.07
+Resistores,1,R4,330,Resistor 330R 1/4W 5%,R$0.07
+Circuitos Integrados,1,U1,ATMEGA328P,Microcontrolador Atmega328P,R$44.90
+Circuitos Integrados,1,U2,7806,7806 - CI Regulador de Tensão 6V (AC),R$2.40
+Circuitos Integrados,1,U3,7805,Regulador de Tensão 7905 -5V,R$1.90
+Circuitos Integrados,1,U4,CMI-0955-03TH,Buzzer Ativo 5V 12mm,R$1.90
+Diodes,2,"D1,D3",LED-G,LED Difuso 5mm - Verde,R$0.20
+Diodes,1,D4,LED-R,LED Difuso 5mm - Vermelho,R$0.20
+Outros,1,BTN1,PUSH-BUTTON,"Chave Táctil Push Button 6x6x7,3mm ",R$0.30
+Outros,1,CAIXA,ANY,Caixa Patola PB-201/2 - 85x69x39mm,R$21.90
+Outros,1,J1,DC JACK,"Conector J4 Jack Fêmea 5,5 x 2,1mm",R$0.90
+Outros,1,J2,26630701RP2,"Conector JST XH2,54mm Macho 7 Vias",R$0.70
+Outros,1,RL1,G2RL-14B-DC5,Módulo Relé 1 Canal 5V(AC),R$7.90
+Outros,1,TECLADO,ANY,Teclado Matricial Rígido 4x3 - 12 Teclas,R$23.90
+Outros,1,TRAVA,ANY,Mini Fechadura / Trava Solenoide 6V - LY-031A,R$59.90
+Outros,1,X1,CRYSTAL,Cristal Oscilador 16MHz - HC49S,R$1.50
